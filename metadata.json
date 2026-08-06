@@ -1,0 +1,8 @@
+{
+  "name": "Hëna",
+  "description": "Një aplikacion i bukur, intim dhe i thjeshtë për gjurmimin e ciklit menstrual, krijuar posaçërisht për vajzat dhe gratë shqiptare.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

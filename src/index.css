@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0D0A1A;
+    color: #F3F0FF;
+  }
+
+  h1, h2, h3, .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom glow and backdrop effects */
+.luminous-glow-rose {
+  box-shadow: 0 0 30px rgba(255, 51, 102, 0.35);
+}
+
+.luminous-glow-purple {
+  box-shadow: 0 0 30px rgba(168, 139, 255, 0.35);
+}
+
+.luminous-glow-gold {
+  box-shadow: 0 0 30px rgba(255, 184, 0, 0.35);
+}
+
+.luminous-glow-cyan {
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.35);
+}
+
+/* Glass card effect */
+.glass-card {
+  background: rgba(24, 18, 43, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(236, 231, 246, 0.12);
+}
+
+/* Hide scrollbar for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
