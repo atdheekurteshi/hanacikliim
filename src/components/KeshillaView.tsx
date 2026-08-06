@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HeartPulse, Utensils, Dumbbell, Sparkles, ShieldCheck } from 'lucide-react';
+import { HeartPulse, Utensils, Dumbbell, Sparkles, ShieldCheck, Search } from 'lucide-react';
 
 interface AdviceCardData {
   phaseKey: string;
@@ -127,10 +127,23 @@ const ADVICE_DATA: AdviceCardData[] = [
 
 export const KeshillaView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('TGJITHA');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredAdvice = ADVICE_DATA.filter(item => {
-    if (selectedCategory === 'TGJITHA') return true;
-    return item.phaseKey === selectedCategory;
+    const matchesCategory = selectedCategory === 'TGJITHA' || item.phaseKey === selectedCategory;
+    if (!matchesCategory) return false;
+
+    if (!searchQuery.trim()) return true;
+
+    const q = searchQuery.toLowerCase();
+    const matchOverview = item.overview.toLowerCase().includes(q);
+    const matchTitle = item.phaseTitle.toLowerCase().includes(q);
+    const matchNutrition = item.nutrition.some(n => n.toLowerCase().includes(q));
+    const matchExercise = item.exercise.some(e => e.toLowerCase().includes(q));
+    const matchSelfCare = item.selfCare.some(s => s.toLowerCase().includes(q));
+    const matchHygiene = item.hygiene.some(h => h.toLowerCase().includes(q));
+
+    return matchOverview || matchTitle || matchNutrition || matchExercise || matchSelfCare || matchHygiene;
   });
 
   return (
@@ -143,6 +156,26 @@ export const KeshillaView: React.FC = () => {
       <p className="text-xs text-[#AFA7CD] mb-4">
         Udhëzime të personalizuara për ushqimin, stërvitjen dhe vetëkujdesin gjatë çdo faze të ciklit tuaj.
       </p>
+
+      {/* Search Input Bar */}
+      <div className="relative mb-4">
+        <Search className="w-4 h-4 text-[#AFA7CD] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Kërko këshilla (p.sh. dhimbje, joga, çaj, magnez)..."
+          className="w-full pl-10 pr-4 py-2.5 rounded-2xl glass-card bg-white/5 border border-white/10 text-white text-xs placeholder-[#AFA7CD]/70 focus:outline-none focus:border-[#FF3366] transition"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#AFA7CD] hover:text-white"
+          >
+            ✕
+          </button>
+        )}
+      </div>
 
       {/* Categories Filter */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3 mb-4">
@@ -169,7 +202,16 @@ export const KeshillaView: React.FC = () => {
 
       {/* Advice Cards List */}
       <div className="space-y-5">
-        {filteredAdvice.map(card => (
+        {filteredAdvice.length === 0 ? (
+          <div className="glass-card rounded-3xl p-8 text-center border border-white/10">
+            <span className="text-3xl block mb-2">🔍</span>
+            <h3 className="font-bold text-white text-sm mb-1">Nuk u gjet asnjë këshillë</h3>
+            <p className="text-xs text-[#AFA7CD]">
+              Përshkrimi apo termi "{searchQuery}" nuk përputhet me këshillat aktuale. Provojini me fjalë të tjera.
+            </p>
+          </div>
+        ) : (
+          filteredAdvice.map(card => (
           <div
             key={card.phaseKey}
             className="glass-card rounded-3xl p-5 border shadow-xl transition-all"
@@ -260,7 +302,7 @@ export const KeshillaView: React.FC = () => {
               </div>
             </div>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );
